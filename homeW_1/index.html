@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1 class="mb-4">Расписание занятий</h1>
+      <ul class="task-list" id="listTask"></ul>
+      <!-- <button class="btn btn-success mt-3" id="addListener">Записаться</button>
+      <button class="btn btn-danger mt-3" id="removeListener">Отменить запись</button> -->
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const taskList = [
+        {
+          name: "Java Script",
+          dataStart: "10.10.2025",
+          maxCount: 10,
+          totalCount: 0,
+        },
+        {
+          name: "HTML",
+          dataStart: "10.10.2025",
+          maxCount: 10,
+          totalCount: 0,
+        },
+        {
+          name: "CSS",
+          dataStart: "10.10.2025",
+          maxCount: 10,
+          totalCount: 0,
+        },
+      ];
+
+      taskList.forEach((element) => {
+        const articleTask = createArticle(element.name, element.dataStart, element.maxCount, element.totalCount);
+        listTask.append(articleTask);
+      });
+
+      function createArticle(name, dataStart, maxCount, totalCount) {
+        const articleItem = document.createElement("li");
+        articleItem.classList.add("list-group");
+
+        const titleEl = document.createElement("h2");
+        titleEl.classList.add("mb-3");
+        titleEl.textContent = name;
+
+        const startEl = document.createElement("p");
+        startEl.textContent = `Дата начала: ${dataStart}`;
+
+        const listUserEl = document.createElement("p");
+        const spanEl = document.createElement("span");
+        spanEl.classList.add("spa");
+        spanEl.textContent = totalCount;
+        listUserEl.textContent = "Записано участников: ";
+        listUserEl.appendChild(spanEl);
+
+        const maxCountEl = document.createElement("p");
+        const span1El = document.createElement("span");
+        span1El.classList.add("spa1");
+        span1El.textContent = maxCount;
+        maxCountEl.textContent = "Всего мест: ";
+        maxCountEl.appendChild(span1El);
+
+        const addBut = document.createElement("button");
+        addBut.classList.add("btn", "btn-success", "mt-3");
+        addBut.textContent = "Записаться";
+
+        const remBut = document.createElement("button");
+        remBut.classList.add("btn", "btn-danger", "mt-3");
+        remBut.textContent = "Отменить запись";
+        remBut.disabled = true;
+
+        articleItem.append(titleEl);
+        articleItem.append(startEl);
+        articleItem.append(listUserEl);
+        articleItem.append(maxCountEl);
+        articleItem.append(addBut);
+        articleItem.append(remBut);
+
+        return articleItem;
+      }
+
+      const addBt = document.querySelectorAll(".btn");
+
+      addBt.forEach((element) => {
+        element.addEventListener("click", function (e) {
+          if (e.target.textContent == "Записаться") {
+            const artEl = e.target.closest("li");
+            const count = artEl.querySelector(".spa");
+            const max = artEl.querySelector(".spa1");
+            const numMax = parseInt(max.textContent);
+            let num = parseInt(count.textContent);
+            count.textContent = num + 1;
+            const btnRem = artEl.querySelector(".btn-danger");
+            btnRem.disabled = false;
+            if (count.textContent == numMax) {
+              const btnAdd = artEl.querySelector(".btn-success");
+              btnAdd.disabled = true;
+            }
+          }
+          if (e.target.textContent == "Отменить запись") {
+            const artEl = e.target.closest("li");
+            const count = artEl.querySelector(".spa");
+            const max = artEl.querySelector(".spa1");
+            const numMax = parseInt(max.textContent);
+            let num = parseInt(count.textContent);
+            count.textContent = num - 1;
+            if (count.textContent < numMax) {
+              console.log(numMax);
+              const btnAdd = artEl.querySelector(".btn-success");
+              btnAdd.disabled = false;
+            }
+            if (count.textContent == 0) {
+              const btnRem = artEl.querySelector(".btn-danger");
+              btnRem.disabled = true;
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
