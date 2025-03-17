@@ -1,0 +1,25 @@
+*{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+.cont {
+    width: 360px;
+    height: 260px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rad {
+    width: 30px; height: 30px;
+    border: 1px solid black;
+    border-radius: 50%;
+}
+
+.nav {
+    display: flex;
+    gap: 10px;
+}
