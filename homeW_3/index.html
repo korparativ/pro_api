@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script>
+      let page = 1;
+      let ind = parseInt(localStorage.getItem("index")); // почемуто не работает проверка на на наличие значения по ключу и задание первоначального значения. Поэтому сначала надо присвоить localStorage.
+
+      async function loadFoto() {
+        try {
+          const response = await fetch(
+            `https://api.unsplash.com/photos/?page=${page}&client_id=F3Lq5bwhNJdj_SbtRdcoMWaU2uW0Qd3iqeTrp9kXQOI`
+          );
+          const photo = await response.json();
+
+          if (ind > 9) {
+            localStorage.setItem("index", 0);
+            page++;
+          }
+
+          const imgEl = document.createElement("img");
+          imgEl.src = photo[ind].urls.small;
+          imgEl.alt = photo[ind].alt_description;
+
+          const userEl = document.createElement("p");
+          userEl.textContent = `Автор: ${photo[ind].user.username}`;
+
+          const btnEl = document.createElement("button");
+          btnEl.classList.add("like");
+          let count = photo[ind].likes;
+          btnEl.textContent = `Like ${count}`;
+
+          container.appendChild(imgEl);
+          container.appendChild(userEl);
+          container.appendChild(btnEl);
+
+          btnEl.addEventListener("click", function (e) {
+            count++;
+            btnEl.textContent = `Like ${count}`;
+            container.appendChild(btnEl);
+          });
+
+          return photo;
+        } catch {
+          console.error("Ошибка при загрузке фотографии", error);
+          return;
+        }
+      }
+
+      loadFoto();
+      document.addEventListener("DOMContentLoaded", function () {
+        localStorage.setItem("index", ind + 1);
+      });
+    </script>
+  </body>
+</html>
